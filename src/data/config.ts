@@ -10,9 +10,13 @@ export const CONFIG = {
   START_TREATS: 1,
 
   // --- Economy --------------------------------------------------------------
-  /** Per-loop sale value as a fraction of the animal's purchase price. */
-  SALE_VALUE_RATIO: 0.25,
-  /** Minimum sale value, so cheap early animals still pay out. */
+  /**
+   * Sale price a customer pays, as a multiple of the animal's purchase price.
+   * The animal LEAVES the belt when sold, so this must be > 1 to turn a profit.
+   * e.g. 1.6 => you roughly recoup the cost plus ~60%, before care tips/upgrades.
+   */
+  SALE_PROFIT_MULT: 1.6,
+  /** Minimum sale value, so the 1-Treat Fly still pays out. */
   SALE_VALUE_FLOOR: 2,
   /** Each station service pays this fraction of the animal's sale value. */
   CARE_TIP_RATIO: 0.05,
@@ -62,7 +66,7 @@ export const CONFIG = {
 export function saleValueFor(price: number): number {
   return Math.max(
     CONFIG.SALE_VALUE_FLOOR,
-    Math.round(price * CONFIG.SALE_VALUE_RATIO),
+    Math.round(price * CONFIG.SALE_PROFIT_MULT),
   );
 }
 

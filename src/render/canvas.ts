@@ -261,6 +261,28 @@ function drawCheckout(g: RowGeom, row: GameState["rows"][number]): void {
   }
 }
 
+/**
+ * Push clustered animals apart along the belt so they read as a queue instead
+ * of stacking on top of each other. Only nudges animals that are too close;
+ * well-separated ones keep their positions. The gap shrinks to guarantee the
+ * whole row fits within the lane even when it's very crowded.
+ */
+function spreadRow(animals: BeltAnimal[], g: RowGeom): void {
+  const n = animals.length;
+  if (n < 2) return;
+  const leftBound = g.laneLeft + 24;
+  const rightBound = g.laneLeft + g.laneWidth - 24;
+  const gap = Math.min(50, (rightBound - leftBound) / (n - 1));
+  const ordered = [...animals].sort((a, b) => a.x - b.x);
+  let last = -Infinity;
+  for (const a of ordered) {
+    if (a.x < last + gap) a.x = last + gap;
+    last = a.x;
+  }
+  const overflow = last - rightBound;
+  if (overflow > 0) for (const a of ordered) a.x -= overflow;
+}
+
 export function drawScene(state: GameState, mods: Modifiers, dt: number): void {
   computeGeom(state);
   ctx.clearRect(0, 0, cssW, cssH);
@@ -287,7 +309,8 @@ export function drawScene(state: GameState, mods: Modifiers, dt: number): void {
     for (const a of row.animals) {
       positionAnimal(a, g);
     }
-    // draw in x order so nearer-front overlaps read okay
+    spreadRow(row.animals, g);
+    // draw in y order so lower animals overlap on top
     const sorted = [...row.animals].sort((p, q) => p.y - q.y);
     for (const a of sorted) drawAnimal(a, mods);
   }

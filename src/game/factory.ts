@@ -56,10 +56,15 @@ function sellAnimal(
   state.totalSales += 1;
   emit({ x: a.x, y: a.y, amount: pay, kind: "sale" });
 
-  // Animal stays on the belt and starts a fresh care loop.
-  a.stationIndex = 0;
-  a.mode = "service";
-  a.progress = 0;
+  // The customer takes the animal home — it leaves the belt.
+  a.sold = true;
+}
+
+/** Drop animals that were just sold from a row. */
+function removeSold(row: GameState["rows"][number]): void {
+  if (row.animals.some((a) => a.sold)) {
+    row.animals = row.animals.filter((a) => !a.sold);
+  }
 }
 
 // --- Per-frame simulation ---------------------------------------------------
@@ -108,6 +113,7 @@ export function updateFactory(
         }
       }
     }
+    removeSold(row);
   }
 }
 
@@ -161,6 +167,7 @@ export function sellClick(
   for (const a of row.animals) {
     if (a.mode === "awaitSale") sellAnimal(a, state, mods, emit);
   }
+  removeSold(row);
   return state.treats - before;
 }
 

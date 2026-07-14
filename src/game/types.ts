@@ -25,6 +25,8 @@ export interface BeltAnimal {
   y: number;
   /** Small visual bob offset seed. */
   bob: number;
+  /** Set the frame a customer buys it; the animal is then removed. */
+  sold?: boolean;
 }
 
 export interface BeltRow {

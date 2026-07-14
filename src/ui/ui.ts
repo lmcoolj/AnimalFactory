@@ -177,8 +177,8 @@ export function renderShop(state: GameState, mods: Modifiers): void {
     info.appendChild(nameRow);
     const sub = document.createElement("div");
     sub.className = "sub";
-    const perLoop = Math.max(1, Math.round(saleValueFor(def.price) * mods.saleMult));
-    sub.textContent = `Sells for ~${formatTreats(perLoop)}/loop`;
+    const salePrice = Math.max(1, Math.round(saleValueFor(def.price) * mods.saleMult));
+    sub.textContent = `Sells for ~${formatTreats(salePrice)} 🦴`;
     info.appendChild(sub);
     const stock = document.createElement("div");
     stock.className = "stock";

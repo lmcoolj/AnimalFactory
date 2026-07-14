@@ -12,7 +12,7 @@ import type { RarityId } from "./rarities.ts";
 //
 // `price`     = cost in Treats to buy from the shop (one-time).
 // `saleValue` = Treats a customer pays each time the animal completes a full
-//               care loop (see config.ts SALE_VALUE_RATIO). Editable per-animal
+//               care loop (see config.ts SALE_PROFIT_MULT). Editable per-animal
 //               via the optional `saleValueOverride`.
 // ---------------------------------------------------------------------------
 
