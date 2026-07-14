@@ -1,0 +1,15 @@
+{
+  "name": "animal-factory",
+  "version": "0.1.0",
+  "description": "An idle/management factory game where you raise animals on conveyor belts and sell them for Treats.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}
