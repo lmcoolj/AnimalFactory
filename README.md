@@ -59,6 +59,48 @@ Doggo-Clicker house style.
 To add art for the rest, drop a matching PNG into `public/animals/` named after
 the `asset` slug (e.g. `blue-jay.png`, `fennec-fox.png`, `larus-dodo.png`).
 
+### Generating new animals with AI
+
+Any image generator that does cute sticker art works. Recommended, in order:
+
+1. **Recraft** (recraft.ai) — best fit: native **transparent-PNG** export, a
+   "digital illustration / kawaii sticker" style, and it keeps a **consistent
+   style across a whole set** (pin a style, then generate every animal from it).
+2. **ChatGPT / GPT-image-1** — the tool the existing seven look like. Ask for a
+   transparent background explicitly; great single images, style drifts a little
+   across a big batch, so reference an earlier one for consistency.
+3. **Midjourney v6** (`--style raw`) or **Adobe Firefly** (direct transparent
+   PNG) — also great; Midjourney needs a background-removal pass (below).
+
+**Prompt template** (swap in the animal, keep the rest fixed for consistency):
+
+> `A cute kawaii chibi <ANIMAL>, adorable cartoon sticker, big glossy sparkly`
+> `eyes, soft pink blush cheeks, bold clean dark outline, soft cel shading,`
+> `chunky rounded proportions, full body, front view, centered, friendly smile,`
+> `vibrant colors, transparent background, high detail, 1:1 square`
+
+Tips: generate **1024×1024**, **transparent background**, one animal centered.
+For the "Special" mascots (Leo/Willow/Fitz/the named Dodos) add the real
+description (e.g. "golden retriever guide dog" for Leo). Save as
+`public/animals/<slug>.png` — the game picks it up with no code change.
+
+### Making backgrounds transparent
+
+If your generator only outputs a **flat/solid background** (white is easiest),
+`scripts/remove-bg.mjs` flood-fills the background transparent from the edges
+(so interior whites like eyes are kept):
+
+```bash
+npm install --no-save pngjs
+node scripts/remove-bg.mjs                 # all PNGs in public/animals
+node scripts/remove-bg.mjs blue-jay.png    # just one
+TOLERANCE=80 node scripts/remove-bg.mjs x.png   # raise if a halo remains
+```
+
+It works cleanly on flat backgrounds. Soft/gradient backgrounds (or a subject
+colored close to the background) may leave a faint halo — prefer generating with
+a **transparent background** directly when you can.
+
 ## Code layout
 
 ```
