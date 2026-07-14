@@ -49,15 +49,48 @@ needed:
 
 ## Art
 
-Animals look for a **1024×1024 kawaii PNG** at
-`public/animals/<asset>.png` (the `asset` field in `animals.ts`). If none
-exists, the animal's **emoji** is shown as a fallback — so the game is fully
-playable before all art is drawn. Seven starter PNGs
-(bear, axolotl, pug, kitten, octopus, shark, leo) are matched to the
-Doggo-Clicker house style.
+Every animal renders from a PNG at `public/animals/<asset>.png` (the `asset`
+field in `animals.ts`). If one is ever missing, the animal's **emoji** is drawn
+as a fallback, so the game is always playable.
 
-To add art for the rest, drop a matching PNG into `public/animals/` named after
-the `asset` slug (e.g. `blue-jay.png`, `fennec-fox.png`, `larus-dodo.png`).
+**Current look: emoji.** All 56 animals use consistent **Twemoji** emoji images
+(the same flat "Fly / Leo" style) so every animal looks identical on every
+device. Regenerate them any time with:
+
+```bash
+node scripts/fetch-emoji.mjs
+```
+
+(Twemoji graphics © Twitter / jdecked, licensed **CC-BY 4.0** —
+https://github.com/jdecked/twemoji.)
+
+### Swapping in your own art
+
+Drop a PNG named after the `asset` slug into `public/animals/`
+(e.g. `blue-jay.png`, `fennec-fox.png`, `larus-dodo.png`) and it replaces the
+emoji — no code change. Use **1024×1024, transparent background**, one animal
+centered.
+
+Seven hand-styled **kawaii** PNGs (bear, axolotl, pug, kitten, octopus, shark,
+leo, matched to the Doggo-Clicker style) are archived in **`art/kawaii/`**. To
+use those instead of emoji, copy them back:
+
+```bash
+cp art/kawaii/*.png public/animals/
+```
+
+### Generating new animals with AI
+
+Any image generator that does cute sticker art works. Recommended, in order:
+
+1. **Recraft** (recraft.ai) — best fit: native **transparent-PNG** export, a
+   "digital illustration / kawaii sticker" style, and it keeps a **consistent
+   style across a whole set** (pin a style, then generate every animal from it).
+2. **ChatGPT / GPT-image-1** — the tool the kawaii seven look like. Ask for a
+   transparent background explicitly; great single images, style drifts a little
+   across a big batch, so reference an earlier one for consistency.
+3. **Midjourney v6** (`--style raw`) or **Adobe Firefly** (direct transparent
+   PNG) — also great; Midjourney needs a background-removal pass (below).
 
 ### Generating new animals with AI
 
